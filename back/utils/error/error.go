@@ -142,6 +142,8 @@ func FromBindError(err error) *MyError {
 			tag = fmt.Sprintf("%s must contain only numbers", f.Field())
 		case "number":
 			tag = fmt.Sprintf("%s must contain only numbers", f.Field())
+		case "uuid":
+			tag = fmt.Sprintf("%s must be a valid UUID", f.Field())
 		default:
 			tag = fmt.Sprintf("%s is invalid", f.Field())
 		}
@@ -177,6 +179,10 @@ func FromError(err error) *MyError {
 func handlePostgresError(err *pgconn.PgError) *MyError {
 	switch err.Code {
 	case "23505":
+		msg := strings.Replace(err.Detail, "(", "", -1)
+		msg = strings.Replace(msg, ")", "", -1)
+		return BadRequestError(msg, nil)
+	case "23503":
 		msg := strings.Replace(err.Detail, "(", "", -1)
 		msg = strings.Replace(msg, ")", "", -1)
 		return BadRequestError(msg, nil)

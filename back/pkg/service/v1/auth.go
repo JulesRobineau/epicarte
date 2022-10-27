@@ -181,10 +181,10 @@ func SetAuthService(r *gin.RouterGroup, jwt config.JwtConfig) {
 	r.POST("/register", as.Register)
 	// Add privileges on routes
 	r.Use(mddl.MiddlewareFunc(map[string][]enum.Role{
-		"Logout":         {enum.USER},
-		"ChangePassword": {enum.USER},
-		"RefreshToken":   {enum.USER},
-		"GetAccount":     {enum.USER},
+		"Logout":         {enum.STUDENT},
+		"ChangePassword": {enum.STUDENT},
+		"RefreshToken":   {enum.STUDENT},
+		"GetAccount":     {enum.STUDENT},
 	}))
 	// Routes with privileges required
 	r.DELETE("/logout", as.Logout)

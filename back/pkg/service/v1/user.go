@@ -138,13 +138,13 @@ func SetUserRoutes(r *gin.RouterGroup, config config.JwtConfig) {
 
 	// Add privileges on routes
 	r.Use(mdl.MiddlewareFunc(map[string][]enum.Role{
-		"GetUser":    {enum.SUPERADMIN, enum.USER},
+		"GetUser":    {enum.SUPERADMIN, enum.STUDENT},
 		"UserList":   {enum.SUPERADMIN},
-		"UpdateUser": {enum.SUPERADMIN, enum.USER},
+		"UpdateUser": {enum.SUPERADMIN, enum.STUDENT},
 	}))
 
 	// Add routes to the router
 	r.GET("/:user_id", GetUser)
-	r.GET("/", UserList)
+	r.GET("", UserList)
 	r.PUT("/:user_id", UpdateUser)
 }

@@ -41,7 +41,7 @@ type UpdateUser struct {
 	// LastName is the last name of the user
 	LastName string `json:"last_name" binding:"omitempty,min=2"`
 	// Role is the role of the user
-	Role enum.Role `json:"role" binding:"omitempty,oneof=superadmin admin user"`
+	Role enum.Role `json:"role" binding:"omitempty,oneof=superadmin admin student"`
 }
 
 type UserQueryParams struct {

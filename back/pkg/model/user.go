@@ -9,12 +9,18 @@ import (
 
 type User struct {
 	gorm.Model
-	ID        uint64    `gorm:"primarykey"`
-	AccountID uint64    `json:"account_id"`
-	Account   *Account  `json:"account" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	FirstName string    `json:"first_name;not null;size:120"`
-	LastName  string    `json:"last_name;not null;size:120"`
-	Role      enum.Role `json:"role" gorm:"type:role;default:user"`
+	// ID is the primary key
+	ID uint64 `gorm:"primarykey"`
+	// AccountID is the foreign key to the account table
+	AccountID uint64 `json:"account_id"`
+	// Account is the account of the user
+	Account *Account `json:"account" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	// FirstName is the first name of the user
+	FirstName string `json:"first_name;not null;size:120"`
+	// LastName is the last name of the user
+	LastName string `json:"last_name;not null;size:120"`
+	// Role is the role of the user
+	Role enum.Role `json:"role" gorm:"type:role;default:student"`
 }
 
 // TableName returns the name of the table
@@ -24,6 +30,11 @@ func (u *User) TableName() string {
 
 type UserModel struct {
 	Tx *gorm.DB
+}
+
+// NewUserModel creates a new user model
+func NewUserModel(tx *gorm.DB) *UserModel {
+	return &UserModel{Tx: tx}
 }
 
 // Find finds a user by id
@@ -61,4 +72,19 @@ func (u *UserModel) Update(model *User) error {
 // and returns an error if there is one
 func (u *UserModel) Delete(model User) error {
 	return u.Tx.Select("User").Delete(&Account{ID: model.AccountID}).Error
+}
+
+// AddUserToSession adds a user to a session
+func (u *UserModel) AddUserToSession(user *User, session *Session) error {
+	return u.Tx.Model(session).Association("Students").Append(user)
+}
+
+// RemoveUserFromSession removes a user from a session
+func (u *UserModel) RemoveUserFromSession(user *User, session *Session) error {
+	return u.Tx.Model(session).Association("Students").Delete(user)
+}
+
+// Create creates a new user in the database
+func (u *UserModel) Create(model *User) error {
+	return u.Tx.Create(model).Error
 }

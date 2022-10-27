@@ -74,7 +74,7 @@ func NewConfig() Config {
 				Expiration: 24,
 			},
 			Db: DatabaseConfig{
-				Host:         "db",
+				Host:         "localhost",
 				Port:         5432,
 				Username:     "postgres",
 				Password:     "postgres",

@@ -70,7 +70,7 @@ func Register(db *gorm.DB, req dto.Register, jwtConfig config.JwtConfig) (*dto.A
 		User: model.User{
 			FirstName: req.FirstName,
 			LastName:  req.LastName,
-			Role:      enum.USER,
+			Role:      enum.STUDENT,
 		},
 	}
 	if err = accountModel.Create(&a); err != nil {

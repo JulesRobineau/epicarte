@@ -28,6 +28,12 @@ func RunServer(conf config.Config) error {
 	v1.SetAuthService(rg.Group("/auth"), conf.Jwt)
 	// Setup the routes for the user service.
 	v1.SetUserRoutes(rg.Group("/users"), conf.Jwt)
+	// Setup the routes for the class service.
+	v1.SetClassRoutes(rg.Group("/classes"), conf.Jwt)
+	// Setup the routes for the session service.
+	v1.SetSessionRoutes(rg.Group("/sessions"), conf.Jwt)
+	// Setup the routes for the websocket service.
+	v1.SetWebsocketRoutes(rg.Group("/ws"))
 
 	if conf.Env == config.Development {
 		r.GET("/doc/*any", ginSwagger.WrapHandler(

@@ -20,7 +20,7 @@ func (dm *DatabaseMiddleware) SetDBMiddleware() gin.HandlerFunc {
 		}
 
 		var db *gorm.DB
-		timeoutContext, cancel := context.WithTimeout(context.Background(), time.Second)
+		timeoutContext, cancel := context.WithTimeout(context.Background(), time.Hour)
 		defer cancel()
 		// We use the timeout context to avoid the database connection to be blocked
 		db = dm.DB.WithContext(timeoutContext).Begin()

@@ -41,13 +41,16 @@ func NewDatabase(config config.DatabaseConfig) *gorm.DB {
 	}
 
 	// Create enum types
-	db.Exec("CREATE TYPE role AS ENUM ('superadmin', 'user', 'admin');")
+	db.Exec("CREATE TYPE role AS ENUM ('superadmin', 'student', 'admin');")
 
 	// Migrate the schema
 	err = db.AutoMigrate(
 		model.User{},
 		model.Account{},
 		model.Token{},
+		model.Class{},
+		model.Session{},
+		model.Student{},
 	)
 	if err != nil {
 		logging.Error.Fatal(err)
